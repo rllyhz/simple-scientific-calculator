@@ -3,6 +3,7 @@ package id.rllyhz.calculateus;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -291,6 +292,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firstOperandStatus();
     }
 
+    private void clearLastNumber() {
+        String newNumber;
+
+        if (getMainPreviewText().isEmpty()) {
+            newNumber = "0";
+        } else {
+            String number = getMainPreviewText();
+            newNumber = number.substring(0, number.length() - 1);
+        }
+
+        updateOperands(newNumber);
+        setMainPreviewText(newNumber);
+    }
+
     private void updateOperands(String newNumber) {
         if (isFirstOperandActive) {
             firstOperand = convertStringToDouble(newNumber);
@@ -318,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setMainPreviewText(convertDoubleToString(evaluationResult));
         setSecondPreviewText(convertDoubleToString(lastOperand));
         isAlreadyEvaluated = true;
-        secondOperandStatus();
+        alreadyEvaluatedStatus();
     }
 
     private double evaluateOperands() {
@@ -352,13 +367,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         operandsMustEvaluate = true;
     }
 
-    private void clearLastNumber() {
-        if (getMainPreviewText().isEmpty()) return;
-
-        String val = getMainPreviewText();
-        val = val.substring(0, val.length() - 1);
-        updateOperands(val);
-        setMainPreviewText(val);
+    private void alreadyEvaluatedStatus() {
+        isFirstOperandActive = true;
+        isSecondOperandActive = false;
+        operandsMustEvaluate = true;
     }
 
     private double evaluate() {
