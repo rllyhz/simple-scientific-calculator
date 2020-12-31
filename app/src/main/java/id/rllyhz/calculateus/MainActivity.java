@@ -10,15 +10,26 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private enum OperationType {
+        ADDITION,
+        SUBTRACTION,
+        MULTIPLICATION,
+        DIVISION
+    }
+
     private Button btnNumberZero, btnNumberOne, btnNumberTwo, btnNumberThree, btnNumberFour, btnNumberFive,
             btnNumberSix, btnNumberSeven, btnNumberEight, btnNumberNine,
 
-            btnAC, btnC, btnLeftBracket, btnRightBracket,
+    btnAC, btnC, btnLeftBracket, btnRightBracket,
             btnSin, btnCos, btnTan, btnLog, btnLn,
             btnSquareRoot, btnSquare, btnFactorial, btnInverse,
             btnPI, btnPeriod, btnDivision, btnMultiplication, btnAddition, btnSubtraction, btnEqual;
 
-    private TextView tvMainPreview, tvSecondPreview;
+    private double firstOperand, secondOperand, evaluationResult;
+    private OperationType activeOperator;
+    private boolean operandsMustEvaluate = false, isFirstOperandActive = true, isSecondOperandActive = false, isAlreadyEvaluated = false;
+
+    private TextView tvMainPreview, tvSecondPreview, tvActiveOperator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setClickEventToAllButtons();
         setMainPreviewText("0");
         setSecondPreviewText("");
+        firstOperandStatus();
     }
 
     private void initViews() {
@@ -65,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tvMainPreview = findViewById(R.id.tvMainPreview);
         tvSecondPreview = findViewById(R.id.tvSecondPreview);
+        tvActiveOperator = findViewById(R.id.tvActiveOperator);
     }
 
     private void setClickEventToAllButtons() {
@@ -101,19 +114,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setMainPreviewText(String text) {
-        tvMainPreview.setText(text);
+        if (text.endsWith(".0")) {
+            tvMainPreview.setText(text.replace(".0", ""));
+        } else {
+            tvMainPreview.setText(text);
+        }
     }
 
     private String getMainPreviewText() {
-        return tvMainPreview.getText().toString().isEmpty()? "0" : tvMainPreview.getText().toString();
+        return tvMainPreview.getText().toString().isEmpty() ? "0" : tvMainPreview.getText().toString();
     }
 
     private void setSecondPreviewText(String text) {
-        tvSecondPreview.setText(text);
+        if (text.endsWith(".0")) {
+            tvSecondPreview.setText(text.replace(".0", ""));
+        } else {
+            tvSecondPreview.setText(text);
+        }
     }
 
     private String getSecondPreviewText() {
         return tvSecondPreview.getText().toString().isEmpty() ? "0" : tvSecondPreview.getText().toString();
+    }
+
+    private void setActiveOperatorPreview(OperationType activeOperator) {
+        if (activeOperator == OperationType.ADDITION) {
+            tvActiveOperator.setText("+");
+        } else if (activeOperator == OperationType.SUBTRACTION) {
+            tvActiveOperator.setText("-");
+        } else if (activeOperator == OperationType.MULTIPLICATION) {
+            tvActiveOperator.setText("×");
+        } else if (activeOperator == OperationType.DIVISION) {
+            tvActiveOperator.setText("÷");
+        } else {
+            tvActiveOperator.setText("");
+        }
     }
 
     @Override
@@ -121,43 +156,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (v.getId()) {
             case R.id.btnNumberZero:
-                appendNumber("0");
+                appendOperandNumber("0");
                 break;
 
             case R.id.btnNumberOne:
-                appendNumber("1");
+                appendOperandNumber("1");
                 break;
 
             case R.id.btnNumberTwo:
-                appendNumber("2");
+                appendOperandNumber("2");
                 break;
 
             case R.id.btnNumberThree:
-                appendNumber("3");
+                appendOperandNumber("3");
                 break;
 
             case R.id.btnNumberFour:
-                appendNumber("4");
+                appendOperandNumber("4");
                 break;
 
             case R.id.btnNumberFive:
-                appendNumber("5");
+                appendOperandNumber("5");
                 break;
 
             case R.id.btnNumberSix:
-                appendNumber("6");
+                appendOperandNumber("6");
                 break;
 
             case R.id.btnNumberSeven:
-                appendNumber("7");
+                appendOperandNumber("7");
                 break;
 
             case R.id.btnNumberEight:
-                appendNumber("8");
+                appendOperandNumber("8");
                 break;
 
             case R.id.btnNumberNine:
-                appendNumber("9");
+                appendOperandNumber("9");
                 break;
 
             case R.id.btnAC:
@@ -183,6 +218,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnTan:
                 break;
 
+            case R.id.btnLog:
+                break;
+
             case R.id.btnLn:
                 break;
 
@@ -202,22 +240,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnPeriod:
-
                 break;
 
             case R.id.btnDivision:
+                setOperationType(OperationType.DIVISION);
                 break;
 
             case R.id.btnMultiplication:
+                setOperationType(OperationType.MULTIPLICATION);
                 break;
 
             case R.id.btnAddition:
+                setOperationType(OperationType.ADDITION);
                 break;
 
             case R.id.btnSubtraction:
+                setOperationType(OperationType.SUBTRACTION);
                 break;
 
             case R.id.btnEqual:
+                if (operandsMustEvaluate) {
+                    prosesOperands();
+                }
                 break;
 
         }
@@ -225,23 +269,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /*
-    * Helper Methods
-    * */
+     * Helper Methods
+     * */
 
-    private void appendNumber(String number) {
+    private void appendOperandNumber(String number) {
         if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("0")) {
+            updateOperands(number);
             setMainPreviewText(number);
             return;
         }
 
         String newNumber = getMainPreviewText();
         newNumber = newNumber + number;
+        updateOperands(newNumber);
         setMainPreviewText(newNumber);
     }
 
     private void clearAll() {
         setMainPreviewText("0");
         setSecondPreviewText("");
+        firstOperandStatus();
+    }
+
+    private void updateOperands(String newNumber) {
+        if (isFirstOperandActive) {
+            firstOperand = convertStringToDouble(newNumber);
+        } else if (isSecondOperandActive) {
+            secondOperand = convertStringToDouble(newNumber);
+        }
+    }
+
+    private void setOperationType(OperationType activeOperator) {
+        setSecondPreviewText(convertDoubleToString(firstOperand));
+        setMainPreviewText("");
+        secondOperandStatus();
+        isAlreadyEvaluated = false;
+
+        this.activeOperator = activeOperator;
+        setActiveOperatorPreview(activeOperator);
+    }
+
+    private void prosesOperands() {
+        if (isAlreadyEvaluated) return;
+
+        evaluationResult = evaluateOperands();
+        double lastOperand = secondOperand;
+        firstOperand = evaluationResult;
+        setMainPreviewText(convertDoubleToString(evaluationResult));
+        setSecondPreviewText(convertDoubleToString(lastOperand));
+        isAlreadyEvaluated = true;
+        secondOperandStatus();
+    }
+
+    private double evaluateOperands() {
+        double result;
+
+        if (activeOperator == OperationType.ADDITION) {
+            result = firstOperand + secondOperand;
+        } else if (activeOperator == OperationType.SUBTRACTION) {
+            result = firstOperand - secondOperand;
+        } else if (activeOperator == OperationType.MULTIPLICATION) {
+            result = firstOperand * secondOperand;
+        } else if (activeOperator == OperationType.DIVISION) {
+            result = firstOperand / secondOperand;
+        } else {
+            result = 0d;
+        }
+
+        return result;
+    }
+
+    private void firstOperandStatus() {
+        operandsMustEvaluate = false;
+        isFirstOperandActive = true;
+        isSecondOperandActive = false;
+        isAlreadyEvaluated = false;
+    }
+
+    private void secondOperandStatus() {
+        isFirstOperandActive = false;
+        isSecondOperandActive = true;
+        operandsMustEvaluate = true;
     }
 
     private void clearLastNumber() {
@@ -249,15 +357,102 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String val = getMainPreviewText();
         val = val.substring(0, val.length() - 1);
+        updateOperands(val);
         setMainPreviewText(val);
     }
 
+    private double evaluate() {
+        String stringToBeEvaluted = getMainPreviewText();
+        final String str = stringToBeEvaluted.replace('÷', '/')
+                .replace('×', '*');
+
+        return new Object() {
+            int pos = -1, ch;
+
+            void nextChar() {
+                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+            }
+
+            boolean eat(int charToEat) {
+                while (ch == ' ') nextChar();
+                if (ch == charToEat) {
+                    nextChar();
+                    return true;
+                }
+                return false;
+            }
+
+            double parse() {
+                nextChar();
+                double x = parseExpression();
+                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char) ch);
+                return x;
+            }
+
+            // Grammar:
+            // expression = term | expression `+` term | expression `-` term
+            // term = factor | term `*` factor | term `/` factor
+            // factor = `+` factor | `-` factor | `(` expression `)`
+            //        | number | functionName factor | factor `^` factor
+
+            double parseExpression() {
+                double x = parseTerm();
+                for (; ; ) {
+                    if (eat('+')) x += parseTerm(); // addition
+                    else if (eat('-')) x -= parseTerm(); // subtraction
+                    else return x;
+                }
+            }
+
+            double parseTerm() {
+                double x = parseFactor();
+                for (; ; ) {
+                    if (eat('*')) x *= parseFactor(); // multiplication
+                    else if (eat('/')) x /= parseFactor(); // division
+                    else return x;
+                }
+            }
+
+            double parseFactor() {
+                if (eat('+')) return parseFactor(); // unary plus
+                if (eat('-')) return -parseFactor(); // unary minus
+
+                double x;
+                int startPos = this.pos;
+                if (eat('(')) { // parentheses
+                    x = parseExpression();
+                    eat(')');
+                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+                    x = Double.parseDouble(str.substring(startPos, this.pos));
+                } else if (ch >= 'a' && ch <= 'z') { // functions
+                    while (ch >= 'a' && ch <= 'z') nextChar();
+                    String func = str.substring(startPos, this.pos);
+                    x = parseFactor();
+                    if (func.equals("sqrt")) x = Math.sqrt(x);
+                    else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
+                    else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
+                    else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
+                    else if (func.equals("log")) x = Math.log10(x);
+                    else if (func.equals("ln")) x = Math.log(x);
+                    else throw new RuntimeException("Unknown function: " + func);
+                } else {
+                    throw new RuntimeException("Unexpected: " + (char) ch);
+                }
+
+                if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+
+                return x;
+            }
+        }.parse();
+    }
+
     private int factorialOf(int number) {
-        return (number == 0 || number == 1) ? 1 : (number * factorialOf(number -1));
+        return (number == 0 || number == 1) ? 1 : (number * factorialOf(number - 1));
     }
 
     private int convertStringToint(String number) {
-        return  Integer.parseInt(number);
+        return Integer.parseInt(number);
     }
 
     private double convertStringToDouble(String number) {

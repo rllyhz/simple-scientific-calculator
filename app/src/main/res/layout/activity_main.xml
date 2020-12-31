@@ -8,20 +8,42 @@
     android:weightSum="10"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvSecondPreview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#000"
-        android:gravity="bottom"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:text="47"
-        android:textAlignment="viewEnd"
-        android:textColor="#bebebe"
-        android:textSize="26sp"
-        tools:ignore="RtlCompat" />
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/tvActiveOperator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="left|top"
+            android:padding="10dp"
+            android:text="+"
+            android:textColor="#bebebe"
+            android:textSize="23sp"
+            tools:ignore="NestedWeights,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/tvSecondPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#000"
+            android:gravity="bottom"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text="47"
+            android:textAlignment="viewEnd"
+            android:textColor="#bebebe"
+            android:textSize="26sp"
+            tools:ignore="RtlCompat" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvMainPreview"
@@ -39,10 +61,10 @@
         tools:ignore="RtlCompat" />
 
     <LinearLayout
-        android:background="#000"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
+        android:background="#000"
         android:orientation="vertical">
 
         <LinearLayout
@@ -174,8 +196,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textSize="23sp"
-                android:text="1/x" />
+                android:text="1/x"
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/btnDivision"
