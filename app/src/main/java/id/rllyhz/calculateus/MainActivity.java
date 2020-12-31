@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnNumberZero, btnNumberOne, btnNumberTwo, btnNumberThree, btnNumberFour, btnNumberFive,
             btnNumberSix, btnNumberSeven, btnNumberEight, btnNumberNine,
 
-    btnAC, btnC, btnLeftBracket, btnRightBracket,
+    btnAC, btnC, btnPlusMin, btnPercentage,
             btnSin, btnCos, btnTan, btnLog, btnLn,
             btnSquareRoot, btnSquare, btnFactorial, btnInverse,
             btnPI, btnPeriod, btnDivision, btnMultiplication, btnAddition, btnSubtraction, btnEqual;
@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
         setClickEventToAllButtons();
-        setMainPreviewText("0");
-        setSecondPreviewText("");
+        clearAll();
         firstOperandStatus();
     }
 
@@ -57,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnNumberNine = findViewById(R.id.btnNumberNine);
         btnAC = findViewById(R.id.btnAC);
         btnC = findViewById(R.id.btnC);
-        btnLeftBracket = findViewById(R.id.btnLeftBracket);
-        btnRightBracket = findViewById(R.id.btnRightBracket);
+        btnPlusMin = findViewById(R.id.btnPlusMin);
+        btnPercentage = findViewById(R.id.btnPercentage);
         btnSin = findViewById(R.id.btnSin);
         btnCos = findViewById(R.id.btnCos);
         btnTan = findViewById(R.id.btnTan);
@@ -94,8 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnNumberNine.setOnClickListener(this);
         btnAC.setOnClickListener(this);
         btnC.setOnClickListener(this);
-        btnLeftBracket.setOnClickListener(this);
-        btnRightBracket.setOnClickListener(this);
+        btnPlusMin.setOnClickListener(this);
+        btnPercentage.setOnClickListener(this);
         btnSin.setOnClickListener(this);
         btnCos.setOnClickListener(this);
         btnTan.setOnClickListener(this);
@@ -204,62 +203,142 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 clearLastNumber();
                 break;
 
-            case R.id.btnLeftBracket:
+            case R.id.btnPlusMin:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
                 break;
 
-            case R.id.btnRightBracket:
+            case R.id.btnPercentage:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToPercentage = convertStringToDouble(getMainPreviewText());
+                double percentageResult = numToPercentage / 100;
+                updateOperands(convertDoubleToString(percentageResult));
+                setMainPreviewText(convertDoubleToString(percentageResult));
                 break;
 
             case R.id.btnSin:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToSine = convertStringToDouble(getMainPreviewText());
+                double sineResult = sin(numToSine);
+                updateOperands(convertDoubleToString(sineResult));
+                setMainPreviewText(convertDoubleToString(sineResult));
                 break;
 
             case R.id.btnCos:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToCosine = convertStringToDouble(getMainPreviewText());
+                double cosineResult = cos(numToCosine);
+                updateOperands(convertDoubleToString(cosineResult));
+                setMainPreviewText(convertDoubleToString(cosineResult));
                 break;
 
             case R.id.btnTan:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToTangent = convertStringToDouble(getMainPreviewText());
+                double tangentResult = tan(numToTangent);
+                updateOperands(convertDoubleToString(tangentResult));
+                setMainPreviewText(convertDoubleToString(tangentResult));
                 break;
 
             case R.id.btnLog:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToLog = convertStringToDouble(getMainPreviewText());
+                double logResult = log(numToLog);
+                updateOperands(convertDoubleToString(logResult));
+                setMainPreviewText(convertDoubleToString(logResult));
                 break;
 
             case R.id.btnLn:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                showToast("Hasn't been implemented yet!");
+
+                double numToLn = convertStringToDouble(getMainPreviewText());
+                double lnResult = numToLn;
+                updateOperands(convertDoubleToString(lnResult));
+                setMainPreviewText(convertDoubleToString(lnResult));
                 break;
 
             case R.id.btnSquare:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToSquare = convertStringToDouble(getMainPreviewText());
+                double squareResult = square(numToSquare);
+                updateOperands(convertDoubleToString(squareResult));
+                setMainPreviewText(convertDoubleToString(squareResult));
                 break;
 
             case R.id.btnSquareRoot:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToSquareRoot = convertStringToDouble(getMainPreviewText());
+                double squareRootResult = squareRoot(numToSquareRoot);
+                updateOperands(convertDoubleToString(squareRootResult));
+                setMainPreviewText(convertDoubleToString(squareRootResult));
                 break;
 
             case R.id.btnFactorial:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                int numToFactorial = convertStringToint(getMainPreviewText());
+                int factorialResult = factorialOf(numToFactorial);
+                updateOperands(convertIntegerToString(factorialResult));
+                setMainPreviewText(convertIntegerToString(factorialResult));
                 break;
 
             case R.id.btnInverse:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToInverse = convertStringToDouble(getMainPreviewText());
+                double inverseResult = inverse(numToInverse);
+                updateOperands(convertDoubleToString(inverseResult));
+                setMainPreviewText(convertDoubleToString(inverseResult));
                 break;
 
             case R.id.btnPI:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                double numToMultiplyByPI = convertStringToDouble(getMainPreviewText());
+                double multiplyByPIResult = multiplyByPI(numToMultiplyByPI);
+                updateOperands(convertDoubleToString(multiplyByPIResult));
+                setMainPreviewText(convertDoubleToString(multiplyByPIResult));
                 break;
 
             case R.id.btnPeriod:
+                showToast("Hasn't been implemented yet!");
                 break;
 
             case R.id.btnDivision:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
                 setOperationType(OperationType.DIVISION);
                 break;
 
             case R.id.btnMultiplication:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
                 setOperationType(OperationType.MULTIPLICATION);
                 break;
 
             case R.id.btnAddition:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
                 setOperationType(OperationType.ADDITION);
                 break;
 
             case R.id.btnSubtraction:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
                 setOperationType(OperationType.SUBTRACTION);
                 break;
 
             case R.id.btnEqual:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
                 if (operandsMustEvaluate) {
                     prosesOperands();
                 }
@@ -289,14 +368,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void clearAll() {
         setMainPreviewText("0");
         setSecondPreviewText("");
+        setOperationType(null);
         firstOperandStatus();
     }
 
     private void clearLastNumber() {
         String newNumber;
 
-        if (getMainPreviewText().isEmpty()) {
+        if (getMainPreviewText().isEmpty() || getMainPreviewText().length() == 1) {
             newNumber = "0";
+            setActiveOperatorPreview(null);
         } else {
             String number = getMainPreviewText();
             newNumber = number.substring(0, number.length() - 1);
@@ -315,6 +396,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setOperationType(OperationType activeOperator) {
+        if (activeOperator == null) {
+            setActiveOperatorPreview(activeOperator);
+            return;
+        }
+
         setSecondPreviewText(convertDoubleToString(firstOperand));
         setMainPreviewText("");
         secondOperandStatus();
@@ -373,94 +459,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         operandsMustEvaluate = true;
     }
 
-    private double evaluate() {
-        String stringToBeEvaluted = getMainPreviewText();
-        final String str = stringToBeEvaluted.replace('÷', '/')
-                .replace('×', '*');
-
-        return new Object() {
-            int pos = -1, ch;
-
-            void nextChar() {
-                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
-            }
-
-            boolean eat(int charToEat) {
-                while (ch == ' ') nextChar();
-                if (ch == charToEat) {
-                    nextChar();
-                    return true;
-                }
-                return false;
-            }
-
-            double parse() {
-                nextChar();
-                double x = parseExpression();
-                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char) ch);
-                return x;
-            }
-
-            // Grammar:
-            // expression = term | expression `+` term | expression `-` term
-            // term = factor | term `*` factor | term `/` factor
-            // factor = `+` factor | `-` factor | `(` expression `)`
-            //        | number | functionName factor | factor `^` factor
-
-            double parseExpression() {
-                double x = parseTerm();
-                for (; ; ) {
-                    if (eat('+')) x += parseTerm(); // addition
-                    else if (eat('-')) x -= parseTerm(); // subtraction
-                    else return x;
-                }
-            }
-
-            double parseTerm() {
-                double x = parseFactor();
-                for (; ; ) {
-                    if (eat('*')) x *= parseFactor(); // multiplication
-                    else if (eat('/')) x /= parseFactor(); // division
-                    else return x;
-                }
-            }
-
-            double parseFactor() {
-                if (eat('+')) return parseFactor(); // unary plus
-                if (eat('-')) return -parseFactor(); // unary minus
-
-                double x;
-                int startPos = this.pos;
-                if (eat('(')) { // parentheses
-                    x = parseExpression();
-                    eat(')');
-                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
-                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
-                    x = Double.parseDouble(str.substring(startPos, this.pos));
-                } else if (ch >= 'a' && ch <= 'z') { // functions
-                    while (ch >= 'a' && ch <= 'z') nextChar();
-                    String func = str.substring(startPos, this.pos);
-                    x = parseFactor();
-                    if (func.equals("sqrt")) x = Math.sqrt(x);
-                    else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
-                    else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
-                    else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
-                    else if (func.equals("log")) x = Math.log10(x);
-                    else if (func.equals("ln")) x = Math.log(x);
-                    else throw new RuntimeException("Unknown function: " + func);
-                } else {
-                    throw new RuntimeException("Unexpected: " + (char) ch);
-                }
-
-                if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
-
-                return x;
-            }
-        }.parse();
-    }
-
     private int factorialOf(int number) {
         return (number == 0 || number == 1) ? 1 : (number * factorialOf(number - 1));
+    }
+
+    private double square(double number) {
+        return number * number;
+    }
+
+    private double squareRoot(double number) {
+        return Math.sqrt(number);
+    }
+
+    private double sin(double number) {
+        return Math.sin(number);
+    }
+
+    private double cos(double number) {
+        return Math.cos(number);
+    }
+
+    private double tan(double number) {
+        return Math.tan(number);
+    }
+
+    private double log(double number) {
+        return Math.log(number);
+    }
+
+    private double ln(double number) {
+        return 0d;
+    }
+
+    private double inverse(double number) {
+        return 1 / number;
+    }
+
+    private double multiplyByPI(double number) {
+        return Math.PI * number;
+    }
+
+    private int floor(double number) {
+        return (int) Math.floor(number);
+    }
+
+    private int ceil(double number) {
+        return (int) Math.ceil(number);
     }
 
     private int convertStringToint(String number) {

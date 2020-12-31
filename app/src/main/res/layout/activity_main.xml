@@ -90,20 +90,20 @@
                 android:text="C" />
 
             <Button
-                android:id="@+id/btnLeftBracket"
+                android:id="@+id/btnPI"
                 style="@style/CalculatorButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="(" />
+                android:text="π" />
 
             <Button
-                android:id="@+id/btnRightBracket"
+                android:id="@+id/btnPercentage"
                 style="@style/CalculatorButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text=")" />
+                android:text="%" />
 
         </LinearLayout>
 
@@ -345,12 +345,13 @@
             android:weightSum="4">
 
             <Button
-                android:id="@+id/btnPI"
+                android:id="@+id/btnPlusMin"
                 style="@style/CalculatorButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="π" />
+                android:text="±"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnNumberZero"
@@ -367,6 +368,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/white"
                 android:text="." />
 
             <Button
