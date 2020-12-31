@@ -2,4 +2,4 @@
 
 Simple Scientific calculator using Android Studio
 
-![Preview](images/preview_2.png)
+![Preview](images/preview_2.PNG)
