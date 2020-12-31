@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setClickEventToAllButtons();
         clearAll();
-        firstOperandStatus();
+        firstOperandState();
     }
 
     private void initViews() {
@@ -410,7 +410,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         String newNumber = getMainPreviewText();
-        ;
 
         if (isPeriodActive) {
             double validated = convertStringToDouble(newNumber);
@@ -429,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setMainPreviewText("0");
         setSecondPreviewText("");
         setOperationType(null);
-        firstOperandStatus();
+        firstOperandState();
     }
 
     private void clearLastNumber() {
@@ -463,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setSecondPreviewText(convertDoubleToString(firstOperand));
         setMainPreviewText("");
-        secondOperandStatus();
+        secondOperandState();
         isAlreadyEvaluated = false;
 
         this.activeOperator = activeOperator;
@@ -479,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setMainPreviewText(convertDoubleToString(evaluationResult));
         setSecondPreviewText(convertDoubleToString(lastOperand));
         isAlreadyEvaluated = true;
-        alreadyEvaluatedStatus();
+        alreadyEvaluatedState();
     }
 
     private double evaluateOperands() {
@@ -500,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return result;
     }
 
-    private void firstOperandStatus() {
+    private void firstOperandState() {
         operandsMustEvaluate = false;
         isFirstOperandActive = true;
         isSecondOperandActive = false;
@@ -508,13 +507,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isPeriodActive = false;
     }
 
-    private void secondOperandStatus() {
+    private void secondOperandState() {
         isFirstOperandActive = false;
         isSecondOperandActive = true;
         operandsMustEvaluate = true;
     }
 
-    private void alreadyEvaluatedStatus() {
+    private void alreadyEvaluatedState() {
         isFirstOperandActive = true;
         isSecondOperandActive = false;
         operandsMustEvaluate = true;
