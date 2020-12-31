@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private double firstOperand, secondOperand, evaluationResult;
     private OperationType activeOperator;
     private boolean operandsMustEvaluate = false, isFirstOperandActive = true, isSecondOperandActive = false, isAlreadyEvaluated = false;
+    private boolean isPeriodActive = false;
 
     private TextView tvMainPreview, tvSecondPreview, tvActiveOperator;
 
@@ -204,11 +205,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnPlusMin:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") ||
+                        getMainPreviewText().equals("0") || isPeriodActive) break;
+
+                double plusMinNum = convertStringToDouble(getMainPreviewText());
+                plusMinNum = plusMinNum * -1;
+
+                updateOperands(convertDoubleToString(plusMinNum));
+                setMainPreviewText(convertDoubleToString(plusMinNum));
                 break;
 
-            case R.id.btnPercentage:
+            case R.id.btnPeriod:
                 if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+
+                if (isPeriodActive) {
+                    isPeriodActive = false;
+                    String newNumber = getMainPreviewText();
+                    newNumber = newNumber.replace(".", "");
+                    setMainPreviewText(newNumber);
+                } else {
+                    isPeriodActive = true;
+                    setMainPreviewText(getMainPreviewText() + ".");
+                }
+                break;
+
+            case R.id.btnDivision:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
+
+                if (getMainPreviewText().equals("0")) {
+                    updateOperands("0");
+                }
+
+                setOperationType(OperationType.DIVISION);
+                break;
+
+            case R.id.btnMultiplication:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
+
+                if (getMainPreviewText().equals("0")) {
+                    updateOperands("0");
+                }
+
+                setOperationType(OperationType.MULTIPLICATION);
+                break;
+
+            case R.id.btnAddition:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
+
+                if (getMainPreviewText().equals("0")) {
+                    updateOperands("0");
+                }
+
+                setOperationType(OperationType.ADDITION);
+                break;
+
+            case R.id.btnSubtraction:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
+
+                if (getMainPreviewText().equals("0")) {
+                    updateOperands("0");
+                }
+
+                setOperationType(OperationType.SUBTRACTION);
+                break;
+
+            case R.id.btnEqual:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
+
+                if (operandsMustEvaluate) {
+                    prosesOperands();
+                }
+                break;
+
+
+            case R.id.btnPercentage:
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToPercentage = convertStringToDouble(getMainPreviewText());
                 double percentageResult = numToPercentage / 100;
@@ -217,7 +294,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnSin:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToSine = convertStringToDouble(getMainPreviewText());
                 double sineResult = sin(numToSine);
@@ -226,7 +304,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnCos:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToCosine = convertStringToDouble(getMainPreviewText());
                 double cosineResult = cos(numToCosine);
@@ -235,7 +314,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnTan:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToTangent = convertStringToDouble(getMainPreviewText());
                 double tangentResult = tan(numToTangent);
@@ -244,7 +324,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnLog:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToLog = convertStringToDouble(getMainPreviewText());
                 double logResult = log(numToLog);
@@ -253,7 +334,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnLn:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 showToast("Hasn't been implemented yet!");
 
@@ -264,7 +346,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnSquare:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToSquare = convertStringToDouble(getMainPreviewText());
                 double squareResult = square(numToSquare);
@@ -273,7 +356,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnSquareRoot:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToSquareRoot = convertStringToDouble(getMainPreviewText());
                 double squareRootResult = squareRoot(numToSquareRoot);
@@ -282,7 +366,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnFactorial:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 int numToFactorial = convertStringToint(getMainPreviewText());
                 int factorialResult = factorialOf(numToFactorial);
@@ -291,7 +376,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnInverse:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToInverse = convertStringToDouble(getMainPreviewText());
                 double inverseResult = inverse(numToInverse);
@@ -300,50 +386,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnPI:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || isPeriodActive)
+                    break;
 
                 double numToMultiplyByPI = convertStringToDouble(getMainPreviewText());
                 double multiplyByPIResult = multiplyByPI(numToMultiplyByPI);
                 updateOperands(convertDoubleToString(multiplyByPIResult));
                 setMainPreviewText(convertDoubleToString(multiplyByPIResult));
                 break;
-
-            case R.id.btnPeriod:
-                showToast("Hasn't been implemented yet!");
-                break;
-
-            case R.id.btnDivision:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
-
-                setOperationType(OperationType.DIVISION);
-                break;
-
-            case R.id.btnMultiplication:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
-
-                setOperationType(OperationType.MULTIPLICATION);
-                break;
-
-            case R.id.btnAddition:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
-
-                setOperationType(OperationType.ADDITION);
-                break;
-
-            case R.id.btnSubtraction:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
-
-                setOperationType(OperationType.SUBTRACTION);
-                break;
-
-            case R.id.btnEqual:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
-
-                if (operandsMustEvaluate) {
-                    prosesOperands();
-                }
-                break;
-
         }
     }
 
@@ -360,7 +410,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         String newNumber = getMainPreviewText();
-        newNumber = newNumber + number;
+        ;
+
+        if (isPeriodActive) {
+            double validated = convertStringToDouble(newNumber);
+            validated = validated + (convertStringToDouble(number) / 10);
+            newNumber = convertDoubleToString(validated);
+            isPeriodActive = false;
+        } else {
+            newNumber = newNumber + number;
+        }
+
         updateOperands(newNumber);
         setMainPreviewText(newNumber);
     }
@@ -445,6 +505,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isFirstOperandActive = true;
         isSecondOperandActive = false;
         isAlreadyEvaluated = false;
+        isPeriodActive = false;
     }
 
     private void secondOperandStatus() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources  xmlns:tools="http://schemas.android.com/tools">
     <style name="CalculatorButton">
-        <item name="android:backgroundTint">#000</item>
+        <item name="android:backgroundTint">@android:color/black</item>
         <item name="android:textColor">#ffa500</item>
         <item name="android:textSize">28sp</item>
         <item name="textAllCaps">false</item>
