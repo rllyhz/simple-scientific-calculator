@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnEqual.setOnClickListener(this);
     }
 
-    private void setMainPreviewText(String text) {
-        if (text.endsWith(".0")) {
+    private void setMainPreviewText(String text, boolean prefixWithPeriode) {
+        if (!prefixWithPeriode && text.endsWith(".0")) {
             tvMainPreview.setText(text.replace(".0", ""));
         } else {
             tvMainPreview.setText(text);
@@ -212,20 +212,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 plusMinNum = plusMinNum * -1;
 
                 updateOperands(convertDoubleToString(plusMinNum));
-                setMainPreviewText(convertDoubleToString(plusMinNum));
+                setMainPreviewText(convertDoubleToString(plusMinNum), false);
                 break;
 
             case R.id.btnPeriod:
-                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("")) break;
+                if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("") || getMainPreviewText().contains(".")) break;
 
                 if (isPeriodActive) {
                     isPeriodActive = false;
                     String newNumber = getMainPreviewText();
                     newNumber = newNumber.replace(".", "");
-                    setMainPreviewText(newNumber);
+                    setMainPreviewText(newNumber, false);
                 } else {
                     isPeriodActive = true;
-                    setMainPreviewText(getMainPreviewText() + ".");
+                    setMainPreviewText(getMainPreviewText() + ".", false);
                 }
                 break;
 
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToPercentage = convertStringToDouble(getMainPreviewText());
                 double percentageResult = numToPercentage / 100;
                 updateOperands(convertDoubleToString(percentageResult));
-                setMainPreviewText(convertDoubleToString(percentageResult));
+                setMainPreviewText(convertDoubleToString(percentageResult), false);
                 break;
 
             case R.id.btnSin:
@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToSine = convertStringToDouble(getMainPreviewText());
                 double sineResult = sin(numToSine);
                 updateOperands(convertDoubleToString(sineResult));
-                setMainPreviewText(convertDoubleToString(sineResult));
+                setMainPreviewText(convertDoubleToString(sineResult), false);
                 break;
 
             case R.id.btnCos:
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToCosine = convertStringToDouble(getMainPreviewText());
                 double cosineResult = cos(numToCosine);
                 updateOperands(convertDoubleToString(cosineResult));
-                setMainPreviewText(convertDoubleToString(cosineResult));
+                setMainPreviewText(convertDoubleToString(cosineResult), false);
                 break;
 
             case R.id.btnTan:
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToTangent = convertStringToDouble(getMainPreviewText());
                 double tangentResult = tan(numToTangent);
                 updateOperands(convertDoubleToString(tangentResult));
-                setMainPreviewText(convertDoubleToString(tangentResult));
+                setMainPreviewText(convertDoubleToString(tangentResult), false);
                 break;
 
             case R.id.btnLog:
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToLog = convertStringToDouble(getMainPreviewText());
                 double logResult = log(numToLog);
                 updateOperands(convertDoubleToString(logResult));
-                setMainPreviewText(convertDoubleToString(logResult));
+                setMainPreviewText(convertDoubleToString(logResult), false);
                 break;
 
             case R.id.btnLn:
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToLn = convertStringToDouble(getMainPreviewText());
                 double lnResult = numToLn;
                 updateOperands(convertDoubleToString(lnResult));
-                setMainPreviewText(convertDoubleToString(lnResult));
+                setMainPreviewText(convertDoubleToString(lnResult), false);
                 break;
 
             case R.id.btnSquare:
@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToSquare = convertStringToDouble(getMainPreviewText());
                 double squareResult = square(numToSquare);
                 updateOperands(convertDoubleToString(squareResult));
-                setMainPreviewText(convertDoubleToString(squareResult));
+                setMainPreviewText(convertDoubleToString(squareResult), false);
                 break;
 
             case R.id.btnSquareRoot:
@@ -362,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToSquareRoot = convertStringToDouble(getMainPreviewText());
                 double squareRootResult = squareRoot(numToSquareRoot);
                 updateOperands(convertDoubleToString(squareRootResult));
-                setMainPreviewText(convertDoubleToString(squareRootResult));
+                setMainPreviewText(convertDoubleToString(squareRootResult), false);
                 break;
 
             case R.id.btnFactorial:
@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int numToFactorial = convertStringToint(getMainPreviewText());
                 int factorialResult = factorialOf(numToFactorial);
                 updateOperands(convertIntegerToString(factorialResult));
-                setMainPreviewText(convertIntegerToString(factorialResult));
+                setMainPreviewText(convertIntegerToString(factorialResult), false);
                 break;
 
             case R.id.btnInverse:
@@ -382,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToInverse = convertStringToDouble(getMainPreviewText());
                 double inverseResult = inverse(numToInverse);
                 updateOperands(convertDoubleToString(inverseResult));
-                setMainPreviewText(convertDoubleToString(inverseResult));
+                setMainPreviewText(convertDoubleToString(inverseResult), false);
                 break;
 
             case R.id.btnPI:
@@ -392,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double numToMultiplyByPI = convertStringToDouble(getMainPreviewText());
                 double multiplyByPIResult = multiplyByPI(numToMultiplyByPI);
                 updateOperands(convertDoubleToString(multiplyByPIResult));
-                setMainPreviewText(convertDoubleToString(multiplyByPIResult));
+                setMainPreviewText(convertDoubleToString(multiplyByPIResult), false);
                 break;
         }
     }
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void appendOperandNumber(String number) {
         if (getMainPreviewText().isEmpty() || getMainPreviewText().equals("0")) {
             updateOperands(number);
-            setMainPreviewText(number);
+            setMainPreviewText(number, false);
             return;
         }
 
@@ -415,17 +415,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             double validated = convertStringToDouble(newNumber);
             validated = validated + (convertStringToDouble(number) / 10);
             newNumber = convertDoubleToString(validated);
+            setMainPreviewText(newNumber, true);
             isPeriodActive = false;
         } else {
             newNumber = newNumber + number;
+            setMainPreviewText(newNumber, false);
         }
 
         updateOperands(newNumber);
-        setMainPreviewText(newNumber);
     }
 
     private void clearAll() {
-        setMainPreviewText("0");
+        setMainPreviewText("0", false);
         setSecondPreviewText("");
         setOperationType(null);
         firstOperandState();
@@ -443,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         updateOperands(newNumber);
-        setMainPreviewText(newNumber);
+        setMainPreviewText(newNumber, false);
     }
 
     private void updateOperands(String newNumber) {
@@ -461,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         setSecondPreviewText(convertDoubleToString(firstOperand));
-        setMainPreviewText("");
+        setMainPreviewText("", false);
         secondOperandState();
         isAlreadyEvaluated = false;
 
@@ -475,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         evaluationResult = evaluateOperands();
         double lastOperand = secondOperand;
         firstOperand = evaluationResult;
-        setMainPreviewText(convertDoubleToString(evaluationResult));
+        setMainPreviewText(convertDoubleToString(evaluationResult), false);
         setSecondPreviewText(convertDoubleToString(lastOperand));
         isAlreadyEvaluated = true;
         alreadyEvaluatedState();
